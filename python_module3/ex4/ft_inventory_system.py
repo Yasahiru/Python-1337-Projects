@@ -78,8 +78,11 @@ def ft_inventory_system() -> None:
 
 
 def main() -> None:
-    print("=== Inventory System Analysis ===")
-    ft_inventory_system()
+    if (len(sys.argv) < 2):
+        print("No Arguments")
+    else:
+        print("=== Inventory System Analysis ===")
+        ft_inventory_system()
 
 
 if __name__ == "__main__":

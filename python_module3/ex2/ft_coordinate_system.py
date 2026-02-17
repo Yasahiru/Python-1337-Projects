@@ -21,6 +21,13 @@ def ft_coordinate_system() -> None:
                     f"{round(Euclidean_formula(default, coordinates), 2)}\n"
                 )
         else:
+            coordinates = (10, 20, 5)
+            default = (0, 0, 0)
+            print(f"Position Created: {coordinates}")
+            print(
+                    f"Distance between {default} and {coordinates}: "
+                    f"{round(Euclidean_formula(default, coordinates), 2)}\n"
+                )
             print(f"Parsing coordinates: \"{sys.argv[1]}\"")
             for av in sys.argv:
                 if av != sys.argv[0]:
