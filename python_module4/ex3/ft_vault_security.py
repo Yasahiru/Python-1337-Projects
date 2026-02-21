@@ -5,23 +5,18 @@ def ft_vault_security():
         print("Vault connection established with failsafe protocols\n")
 
         print("SECURE EXTRACTION:")
-        file1: any = open("classified_data.txt", "r")
-        print(f"{file1.read()}\n")
-        file1.close()
-
-        file1 = open("classified_data.txt", "a")
-        file2 = open("security_protocols.txt", "r")
+        with open("classified_data.txt", "r") as f:
+            print(f"{f.read()}\n")
 
         print("SECURE PRESERVATION:")
-        print(file2.read())
-        file1.write(f"\n{file2.read()}")
-        file1.close()
-        file2.close()
+        with open("security_protocols.txt", "r") as f:
+            print(f"{f.read()}")
 
-        print("Vault automatically sealed upon completion")
-        print("All vault operations completed with maximum security.")
     except Exception as e:
         print(e)
+    finally:
+        print("Vault automatically sealed upon completion\n")
+        print("All vault operations completed with maximum security.")
 
 
 def main():
