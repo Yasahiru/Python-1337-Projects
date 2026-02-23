@@ -9,7 +9,7 @@ def check_temperature(temp_str: int) -> int:
         else:
             print(f"Temperature {tmp}°C is perfect for plants!\n")
     except ValueError:
-        print(f"Error: '{temp_str}' is not a valid numbe\n")
+        print(f"Error: '{temp_str}' is not a valid number\n")
 
 
 def test_temperature_input() -> None:

@@ -1,5 +1,5 @@
 
-def ft_archive_creation():
+def ft_archive_creation() -> None:
     try:
         print("Initializing new storage unit: new_discovery.txt")
         print("Storage unit created successfully...\n")
@@ -24,7 +24,7 @@ def ft_archive_creation():
         f.close()
 
 
-def main():
+def main() -> None:
     print("=== CYBER ARCHIVES - PRESERVATION SYSTEM ===\n")
     ft_archive_creation()
 

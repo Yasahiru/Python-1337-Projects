@@ -1,12 +1,12 @@
+# classified_vault.txt
+# standard_archive.txt
 
-def ft_crisis_response(file_name: str):
+
+def ft_crisis_response(file_name: str) -> None:
     try:
 
-        if (file_name == "classified_vault.txt"):
-            raise PermissionError
-
         with open(file_name, "r") as f:
-            print(f"ROUTINE ACCESS: Attempting access to {file_name}")
+            print(f"ROUTINE ACCESS: Attempting access to \'{file_name}\'")
             print(f"SUCCESS: Archive recovered - ``{f.read()}``")
             print("STATUS: Normal operations resumed\n")
 
@@ -24,7 +24,7 @@ def ft_crisis_response(file_name: str):
         print(f"{e}")
 
 
-def main():
+def main() -> None:
     print("=== CYBER ARCHIVES - CRISIS RESPONSE SYSTEM ===\n")
     ft_crisis_response("lost_archive.txt")
     ft_crisis_response("classified_vault.txt")

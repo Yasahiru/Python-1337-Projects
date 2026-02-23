@@ -1,5 +1,7 @@
+# ancient_fragment.txt
 
-def ft_ancient_text():
+
+def ft_ancient_text() -> None:
     try:
         print("Accessing Storage Vault: ancient_fragment.txt")
         print("Connection established...\n")
@@ -15,7 +17,7 @@ def ft_ancient_text():
         f.close()
 
 
-def main():
+def main() -> None:
     print("=== CYBER ARCHIVES - DATA RECOVERY SYSTEM ===\n")
     ft_ancient_text()
 

@@ -1,10 +1,12 @@
 import sys
 
 
-def ft_stream_management():
+def ft_stream_management() -> None:
     try:
-        archivist_id = input("Input Stream active. Enter archivist ID: ")
-        status_report = input("Input Stream active. Enter status report: ")
+        archivist_id: str = input("Input Stream active. Enter archivist ID: ")
+        status_report: str = input(
+                "Input Stream active. Enter status report: "
+            )
 
         sys.stdout.write(
                         f"\n[STANDARD] Archive status from "
@@ -20,7 +22,7 @@ def ft_stream_management():
         print("\nThree-channel communication test successful.")
 
 
-def main():
+def main() -> None:
     print("=== CYBER ARCHIVES - COMMUNICATION SYSTEM ===\n")
     ft_stream_management()
 

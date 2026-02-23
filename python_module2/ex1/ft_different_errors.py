@@ -6,7 +6,7 @@ def garden_operations(val: int) -> None:
             int(val)
         if (val == "dict"):
             dict = {"test": "test"}
-            print(dict['missing\\_plant'])
+            print(dict['missing_plant'])
         if (val == "import"):
             from numpy import somethingstrange
             somethingstrange
