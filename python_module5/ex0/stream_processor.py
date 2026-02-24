@@ -17,8 +17,10 @@ class DataProcessor(ABC):
 
 class NumericProcessor(DataProcessor):
     def process(self, data: Any) -> str:
-        res: str = ""
+        print("Initializing Numeric Processor...")
         print(f"Processing data: {data}")
+
+        res: str = ""
         if self.validate(data) is True:
             print("Validation: Numeric data verified")
             _values: int = len(data)
@@ -44,7 +46,9 @@ class NumericProcessor(DataProcessor):
 
 class TextProcessor(DataProcessor):
     def process(self, data: Any) -> str:
+        print("Initializing Text Processor...")
         print(f"Processing data: \"{data}\"")
+
         res: str = ""
         if self.validate(data) is True:
             print("Validation: Text data verified")
@@ -68,36 +72,68 @@ class TextProcessor(DataProcessor):
 
 class LogProcessor(DataProcessor):
     def process(self, data: Any) -> str:
+        print("Initializing Log Processor...")
+        print(f"Processing data: \"{data}\"")
+
+        res: str = ""
         if self.validate(data) is True:
-            pass
+            print("Validation: Log entry verified")
+            log_data: str = data.split(":")
+            res = f"[\"Alert\"] {log_data[0]}: {log_data[1]}"
         else:
-            print("Error LogProcess")
+            res = "Error LogProcess"
+        return self.format_output(res)
 
     def validate(self, data: Any) -> bool:
         try:
-            logs: list[str] = ["ERROR", "INFO", "WARNING"]
+            logs: list[str] = ["INFO", "WARNING", "ERROR"]
             _data = data.split(":")
             for log in logs:
                 if _data[0] == log:
                     return True
+            print("false in log proc")
             return False
         except Exception:
             return False
 
     def format_output(self, result: str) -> str:
-        return super().format_output(result)
+        return (f"Output: {result}")
 
 
 def stream_processor() -> None:
     print("=== CODE NEXUS - DATA PROCESSOR FOUNDATION ===\n")
 
-    # initializing: list[str] = [
-    #     "Initializing Numeric Processor...",
-    #     "Initializing Text Processor...",
-    #     "Initializing Log Processor..."
-    # ]
+    num_proc: NumericProcessor = NumericProcessor()
+    text_proc: TextProcessor = TextProcessor()
+    log_proc: LogProcessor = LogProcessor()
 
-    # for initializ in zip(initializing):
+    instances: list[DataProcessor] = [
+        num_proc,
+        text_proc,
+        log_proc
+    ]
+
+    data: list[Any] = [
+        [1, 2, 3, 4, 5],
+        "Hello Nexus World",
+        "INFO: System ready"
+    ]
+
+    results: list[Any] = []
+
+    for data_process in zip(instances, data):
+        res: str = f"{data_process[0].process(data_process[1])}"
+        results.append(res)
+        print(res)
+        print()
+
+    print("=== Polymorphic Processing Demo ===")
+    print("Processing multiple data types through same interface...")
+    index: int = 1
+    for res in results:
+        print(f"Result {index}: {res}")
+        index += 1
+    print()
     print("=== Polymorphic Processing Demo ===")
 
 
