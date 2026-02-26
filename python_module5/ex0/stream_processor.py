@@ -114,9 +114,9 @@ def stream_processor() -> None:
     ]
 
     data: list[Any] = [
-        [1, 2, 3, 4, 5],
+        [1, 2, 3, 4, 6],
         "Hello Nexus World",
-        "INFO: System ready"
+        "ERROR: Connection timeout"
     ]
 
     results: list[Any] = []
