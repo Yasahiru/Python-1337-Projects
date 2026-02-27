@@ -8,7 +8,6 @@ class DataStream(ABC):
     def process_batch(self, data_batch: List[Any]) -> str:
         ...
 
-    @abstractmethod
     def filter_data(
         self,
         data_batch: List[Any],
@@ -16,13 +15,26 @@ class DataStream(ABC):
     ) -> List[Any]:
         ...
 
-    @abstractmethod
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
         ...
 
 
 class SensorStream(DataStream):
-    ...
+    @abstractmethod
+    def process_batch(self, data_batch: List[Any]) -> str:
+        ...
+
+    def filter_data(
+        self,
+        data_batch: List[Any],
+        criteria: Optional[str] = None
+    ) -> List[Any]:
+        try:
+            for data in data_batch:
+                if isinstance(data, Union[int, float]) is not True:
+                    pass
+        except Exception as e:
+            print(e)
 
 
 class TransactionStream(DataStream):
@@ -47,3 +59,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# SUUNY123456789@ha.
