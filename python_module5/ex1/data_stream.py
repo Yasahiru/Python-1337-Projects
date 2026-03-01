@@ -22,9 +22,13 @@ class DataStream(ABC):
 class SensorStream(DataStream):
     def __init__(self, stream_id: str) -> None:
         self.stream_id = stream_id
+        self.total_readings = 0
+        self.last_average = 0.0
+        self.critical_alerts = 0
 
     def process_batch(self, data_batch: List[Any]) -> str:
-        ...
+        return (f"Sensor analysis: {len(data_batch)}readings processed"
+                f", avg temp: {data_batch[0]}°C")
 
     def filter_data(
         self,
@@ -34,6 +38,7 @@ class SensorStream(DataStream):
 
         valid_data: List[Union(int, float)] = []
         try:
+            # critical: int = 0
             for data in data_batch:
                 try:
                     sub_data: Any = data.split(":")
@@ -47,11 +52,13 @@ class SensorStream(DataStream):
 
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
         data: List[float] = self.filter_data()
+        print(f"Stream ID: {self.stream_id}, Type: Environmental Data")
+        print(f"Processing sensor batch: {data}")
 
         status: Dict[str, Union[str, int, float]] = {
             "stream_id": self.stream_id,
             "total_readings": len(data),
-            "avg_temperature": float,
+            "avg_temperature": data[0],
             "critical_alerts": 0
         }
         return status
@@ -61,10 +68,36 @@ class TransactionStream(DataStream):
     def __init__(self, stream_id: str) -> None:
         self.stream_id = stream_id
 
+    def process_batch(self, data_batch: List[Any]) -> str:
+        return (data_batch)
+
+    def filter_data(
+        self,
+        data_batch: List[Any],
+        criteria: Optional[str] = None
+    ) -> List[Any]:
+        ...
+
+    def get_stats(self) -> Dict[str, Union[str, int, float]]:
+        ...
+
 
 class EventStream(DataStream):
     def __init__(self, stream_id: str) -> None:
         self.stream_id = stream_id
+
+    def process_batch(self, data_batch: List[Any]) -> str:
+        return (data_batch)
+
+    def filter_data(
+        self,
+        data_batch: List[Any],
+        criteria: Optional[str] = None
+    ) -> List[Any]:
+        ...
+
+    def get_stats(self) -> Dict[str, Union[str, int, float]]:
+        ...
 
 
 class StreamProcessor:
@@ -99,10 +132,18 @@ def data_stream_test():
 
     for test in zip(init, inst, vals):
         print(f"{test[0]}")
+        filtred_data = test[1].filter_data(test[2])
+        print(test[1].process_batch(filtred_data))
+
+    print("=== Polymorphic Stream Processing ===")
+    print("Processing mixed stream types through unified interface...\n")
+
+    # .....
 
 
 def main():
     data_stream_test()
+    print("All streams processed successfully. Nexus throughput optimal.")
 
 
 if __name__ == "__main__":

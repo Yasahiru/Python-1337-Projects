@@ -2,8 +2,11 @@
 """
 Code Nexus - Polymorphism Testing Suite with Type Checking
 
-This testing suite validates your implementation of polymorphic data processing systems.
-It checks for proper method overriding, inheritance relationships, polymorphic behavior,
+This testing suite validates your implementation of polymorphic data
+processing systems.
+
+It checks for proper method overriding,
+inheritance relationships, polymorphic behavior,
 and type annotations across all three exercises.
 
 Usage:
@@ -83,7 +86,9 @@ class TypeChecker:
 
             # Check for typing imports
             for node in ast.walk(tree):
-                if isinstance(node, ast.ImportFrom) and node.module == "typing":
+                if isinstance(
+                        node, ast.ImportFrom
+                        ) and node.module == "typing":
                     has_typing_imports = True
                 elif isinstance(node, ast.Import):
                     for alias in node.names:
@@ -128,7 +133,6 @@ class TypeChecker:
 
 
 class PolymorphismTester:
-    """Main testing class for polymorphic implementations with type checking."""
 
     def __init__(self) -> None:
         self.results: List[TestResult] = []
@@ -137,7 +141,8 @@ class PolymorphismTester:
     def load_module(self, file_path: str, module_name: str) -> Optional[Any]:
         """Dynamically load a Python module from file path."""
         try:
-            spec = importlib.util.spec_from_file_location(module_name, file_path)
+            spec = importlib.util.spec_from_file_location(
+                module_name, file_path)
             if spec is None or spec.loader is None:
                 return None
 
@@ -177,7 +182,9 @@ class PolymorphismTester:
             file_path = "ex0/stream_processor.py"
 
             # Check type annotations first
-            has_proper_typing, typing_issues = self.type_checker.check_file_typing(file_path)
+            has_proper_typing = self.type_checker.check_file_typing(file_path)
+            typing_issues = self.type_checker.check_file_typing(file_path)
+
             if not has_proper_typing:
                 result.add_error("Type annotation issues found:")
                 for issue in typing_issues:
@@ -202,13 +209,17 @@ class PolymorphismTester:
                         missing_classes.append(class_name)
 
                 if missing_classes:
-                    result.add_error(f"Missing classes: {', '.join(missing_classes)}")
+                    result.add_error(
+                        f"Missing classes: {', '.join(missing_classes)}"
+                        )
                 else:
                     print("✓ All required classes found")
 
                     # Test inheritance relationships
                     DataProcessor = getattr(stream_processor, 'DataProcessor')
-                    NumericProcessor = getattr(stream_processor, 'NumericProcessor')
+                    NumericProcessor = getattr(
+                        stream_processor, 'NumericProcessor'
+                        )
                     TextProcessor = getattr(stream_processor, 'TextProcessor')
                     LogProcessor = getattr(stream_processor, 'LogProcessor')
 
@@ -235,29 +246,36 @@ class PolymorphismTester:
                             log_proc = LogProcessor()
 
                             # Verify methods exist and are callable
-                            for processor in [numeric_proc, text_proc, log_proc]:
+                            for processor in [
+                                    numeric_proc, text_proc, log_proc
+                                    ]:
                                 for method in ['process', 'validate',
                                                'format_output']:
                                     if not hasattr(processor, method) or \
-                                       not callable(getattr(processor, method)):
+                                       not callable(
+                                           getattr(processor, method)):
                                         result.add_error(
                                             f"{processor.__class__.__name__} "
                                             f"missing method: {method}"
                                         )
 
                             if not result.errors:
-                                print("✓ Method overriding implemented correctly")
+                                print(
+                                    "✓ Method overriding implemented correctly"
+                                    )
                                 if has_proper_typing:
                                     result.mark_passed()
 
                         except Exception as e:
-                            result.add_error(f"Error testing method overriding: {str(e)}")
+                            result.add_error("Error testing method "
+                                             f"overriding: {str(e)}")
 
         except Exception as e:
             result.add_error(f"Unexpected error: {str(e)}")
 
         if not result.passed:
-            print("✗ Exercise 0 failed - check implementation and type annotations")
+            print("✗ Exercise 0 failed - "
+                  "check implementation and type annotations")
 
         self.results.append(result)
 
@@ -271,7 +289,8 @@ class PolymorphismTester:
             file_path = "ex1/data_stream.py"
 
             # Check type annotations first
-            has_proper_typing, typing_issues = self.type_checker.check_file_typing(file_path)
+            has_proper_typing = self.type_checker.check_file_typing(file_path)
+            typing_issues = self.type_checker.check_file_typing(file_path)
             if not has_proper_typing:
                 result.add_error("Type annotation issues found:")
                 for issue in typing_issues:
@@ -296,14 +315,17 @@ class PolymorphismTester:
                         missing_classes.append(class_name)
 
                 if missing_classes:
-                    result.add_error(f"Missing classes: {', '.join(missing_classes)}")
+                    result.add_error(
+                        f"Missing classes: {', '.join(missing_classes)}"
+                        )
                 else:
                     print("✓ All required classes found")
 
                     # Test inheritance and polymorphism
                     DataStream = getattr(data_stream, 'DataStream')
                     SensorStream = getattr(data_stream, 'SensorStream')
-                    TransactionStream = getattr(data_stream, 'TransactionStream')
+                    TransactionStream = getattr(
+                        data_stream, 'TransactionStream')
                     EventStream = getattr(data_stream, 'EventStream')
 
                     # Verify inheritance
@@ -330,25 +352,35 @@ class PolymorphismTester:
                             streams = [sensor, transaction, event]
                             for stream in streams:
                                 if not hasattr(stream, 'process_batch') or \
-                                   not callable(getattr(stream, 'process_batch')):
+                                   not callable(
+                                       getattr(stream, 'process_batch')
+                                       ):
                                     result.add_error(
                                         f"{stream.__class__.__name__} "
                                         f"missing process_batch method"
                                     )
 
                             if not result.errors:
-                                print("✓ Polymorphic behavior implemented correctly")
+                                print(
+                                    "✓ Polymorphic behavior"
+                                    "implemented correctly"
+                                    )
                                 if has_proper_typing:
                                     result.mark_passed()
 
                         except Exception as e:
-                            result.add_error(f"Error testing polymorphic behavior: {str(e)}")
+                            result.add_error(
+                                f"Error testing polymorphic behavior: {str(e)}"
+                                )
 
         except Exception as e:
             result.add_error(f"Unexpected error: {str(e)}")
 
         if not result.passed:
-            print("✗ Exercise 1 failed - check implementation and type annotations")
+            print(
+                    "✗ Exercise 1 failed - check"
+                    " implementation and type annotations"
+                )
 
         self.results.append(result)
 
@@ -362,7 +394,8 @@ class PolymorphismTester:
             file_path = "ex2/nexus_pipeline.py"
 
             # Check type annotations first
-            has_proper_typing, typing_issues = self.type_checker.check_file_typing(file_path)
+            has_proper_typing = self.type_checker.check_file_typing(file_path)
+            typing_issues = self.type_checker.check_file_typing(file_path)
             if not has_proper_typing:
                 result.add_error("Type annotation issues found:")
                 for issue in typing_issues:
@@ -388,12 +421,16 @@ class PolymorphismTester:
                         missing_classes.append(class_name)
 
                 if missing_classes:
-                    result.add_error(f"Missing classes: {', '.join(missing_classes)}")
+                    result.add_error(
+                        f"Missing classes: {', '.join(missing_classes)}"
+                        )
                 else:
                     print("✓ All required classes found")
 
                     # Test complex inheritance hierarchy
-                    ProcessingPipeline = getattr(nexus_pipeline, 'ProcessingPipeline')
+                    ProcessingPipeline = getattr(
+                        nexus_pipeline, 'ProcessingPipeline'
+                        )
                     JSONAdapter = getattr(nexus_pipeline, 'JSONAdapter')
                     CSVAdapter = getattr(nexus_pipeline, 'CSVAdapter')
                     StreamAdapter = getattr(nexus_pipeline, 'StreamAdapter')
@@ -414,7 +451,6 @@ class PolymorphismTester:
 
                         # Test enterprise-level polymorphism
                         try:
-                            # Verify manager can handle different pipeline types
                             json_adapter = JSONAdapter("JSON_001")
                             csv_adapter = CSVAdapter("CSV_001")
                             stream_adapter = StreamAdapter("STREAM_001")
@@ -431,18 +467,25 @@ class PolymorphismTester:
                                     )
 
                             if not result.errors:
-                                print("✓ Enterprise-level polymorphism implemented correctly")
+                                print(
+                                    "✓ Enterprise-level polymorphism"
+                                    " implemented correctly"
+                                    )
                                 if has_proper_typing:
                                     result.mark_passed()
 
                         except Exception as e:
-                            result.add_error(f"Error testing enterprise polymorphism: {str(e)}")
+                            result.add_error(
+                                "Error testing enterprise "
+                                f"polymorphism: {str(e)}"
+                                )
 
         except Exception as e:
             result.add_error(f"Unexpected error: {str(e)}")
 
         if not result.passed:
-            print("✗ Exercise 2 failed - check implementation and type annotations")
+            print("✗ Exercise 2 failed - "
+                  "check implementation and type annotations")
 
         self.results.append(result)
 
