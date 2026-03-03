@@ -9,6 +9,7 @@ def ft_ancient_text() -> None:
 
         f = open("ancient_fragment.txt", "r")
         print(f.read())
+        f.close()
 
     except FileNotFoundError as e:
         print(e)
