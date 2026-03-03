@@ -25,22 +25,37 @@ def main():
             )
 
         print("Testing package-level access (controlled by __init__.py):")
+
         print(
             "alchemy.create_fire():"
             f"{alchemy.create_fire()}"
+
         )
         print(
             "alchemy.create_water():"
             f"{alchemy.create_water()}"
         )
-        print(
-            "alchemy.create_earth():"
-            f"{alchemy.create_earth()}"
-        )
-        print(
-            "alchemy.create_air():"
-            f"{alchemy.create_air()}"
-        )
+
+        try:
+            print(
+                "alchemy.create_earth():"
+                f"{alchemy.create_earth()}"
+            )
+        except Exception:
+            print("alchemy.create_earth(): AttributeError - not exposed")
+
+        try:
+            print(
+                "alchemy.create_air():"
+                f"{alchemy.create_air()}"
+            )
+        except Exception:
+            print("alchemy.create_air(): AttributeError - not exposed")
+
+        print()
+        print("Package metadata:")
+        print(f"Version: {alchemy.__version__}")
+        print(f"Author: {alchemy.__author__}")
     except Exception as e:
         print(e)
 
