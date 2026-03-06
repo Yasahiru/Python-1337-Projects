@@ -4,7 +4,7 @@ from typing import Any, List, Optional, Dict, Union
 
 class DataStream(ABC):
 
-    def __init__(self, stream_id: str):
+    def __init__(self, stream_id: str) -> None:
         self.stream_id: str = stream_id
         self.processed_count: int = 0
 
@@ -33,7 +33,7 @@ class DataStream(ABC):
 
 class SensorStream(DataStream):
 
-    def __init__(self, stream_id):
+    def __init__(self, stream_id) -> None:
         super().__init__(stream_id)
         self.processed_count: int = 0
         self.avg: float = 0.0
@@ -63,7 +63,7 @@ class SensorStream(DataStream):
 
 class TransactionStream(DataStream):
 
-    def __init__(self, stream_id):
+    def __init__(self, stream_id) -> None:
         super().__init__(stream_id)
         self.processed_count: int = 0
 
@@ -97,7 +97,7 @@ class TransactionStream(DataStream):
 
 class EventStream(DataStream):
 
-    def __init__(self, stream_id):
+    def __init__(self, stream_id) -> None:
         super().__init__(stream_id)
         self.errors = 0
 
@@ -124,7 +124,7 @@ class EventStream(DataStream):
 
 class StreamProcessor:
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.streams: List[DataStream] = []
 
     def add_stream(self, stream: DataStream) -> None:
@@ -136,7 +136,7 @@ class StreamProcessor:
             print(f"{stream.stream_id}: {result}")
 
 
-def data_stream_test():
+def data_stream_test() -> None:
     print("=== CODE NEXUS - POLYMORPHIC STREAM SYSTEM ===")
 
     init: List[List[str]] = [
@@ -199,7 +199,7 @@ def data_stream_test():
     print("All streams processed successfully. Nexus throughput optimal.")
 
 
-def main():
+def main() -> None:
     data_stream_test()
 
 

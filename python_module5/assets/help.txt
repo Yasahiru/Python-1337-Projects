@@ -1,6 +1,0 @@
-1/  why str() !!!!!!!!!111
-        for data in data_batch:
-            if str(data).lower() == "str":
-                pass
-
-2/

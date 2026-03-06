@@ -15,7 +15,6 @@ def ft_ancient_text() -> None:
         print(e)
     finally:
         print("\nData recovery complete. Storage unit disconnected.")
-        f.close()
 
 
 def main() -> None:
