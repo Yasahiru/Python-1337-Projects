@@ -138,65 +138,66 @@ class StreamProcessor:
 
 def data_stream_test() -> None:
     print("=== CODE NEXUS - POLYMORPHIC STREAM SYSTEM ===")
+    print("Initializing Sensor Stream...")
 
-    init: List[List[str]] = [
-        [
-            "Initializing Sensor Stream...",
-            "Processing sensor batch:",
-            "Sensor analysis:"
-        ],
-        [
-            "Initializing Transaction Stream...",
-            "Processing transaction batch:",
-            "Transaction analysis:"
-        ],
-        [
-            "Initializing Event Stream...",
-            "Processing event batch:",
-            "Event analysis:"
-        ],
+    sensor = SensorStream("SENSOR_001")
+    print(f"Stream ID: {sensor.stream_id}, Type: Environmental Data")
+    print("Processing sensor batch: [temp:22.5, humidity:65, pressure:1013]")
+
+    sensor_batch = [22.5, 65, 1013]
+    result = sensor.process_batch(sensor_batch)
+
+    print(f"Sensor analysis: {result}, avg temp: {sensor.avg}°C")
+    print("\nInitializing Transaction Stream...")
+
+    transaction = TransactionStream("TRANS_001")
+    print(f"Stream ID: {transaction.stream_id}, Type: Financial Data")
+
+    transaction_batch = [
+        {"type": "buy", "amount": 100},
+        {"type": "sell", "amount": 150},
+        {"type": "buy", "amount": 75}
     ]
 
-    sensor_stream: SensorStream = SensorStream("SENSOR_001"),
-    sensor_transaction: TransactionStream = TransactionStream("TRANS_001"),
-    sensor_event: EventStream = EventStream("EVENT_001")
+    print("Processing transaction batch: [buy:100, sell:150, buy:75]")
 
-    streams: List[DataStream] = [
-        sensor_stream,
-        sensor_transaction,
-        sensor_event
-    ]
+    result = transaction.process_batch(transaction_batch)
+    print(f"Transaction analysis: {result}")
+    print("\nInitializing Event Stream...")
 
-    # these values should be dictionnaries List[Dict]
+    event = EventStream("EVENT_001")
+    print(f"Stream ID: {event.stream_id}, Type: System Events")
+
+    event_batch = ["login", "error", "logout"]
+    print("Processing event batch: [login, error, logout]")
+
+    result = event.process_batch(event_batch)
+    print(f"Event analysis: {result}, {event.errors} error detected")
+    print("\n=== Polymorphic Stream Processing ===")
+    print("Processing mixed stream types through unified interface...")
+
+    processor = StreamProcessor()
+    processor.add_stream(sensor)
+    processor.add_stream(transaction)
+    processor.add_stream(event)
+
     batches = [
-        ["temp:22.5", "humidity:65", "pressure:1013"],
-        ["buy:100", "sell:150", "buy:75"],
+        [22.5, 19.8],
+        [
+            {"type": "buy", "amount": 50},
+            {"type": "sell", "amount": 75},
+            {"type": "sell", "amount": 40},
+            {"type": "buy", "amount": 10}
+        ],
         ["login", "error", "logout"]
     ]
 
-    for pre, stream, batch in zip(init, streams, batches):
-        print(pre[0])
-        stream.process_batch(batch)
-        res = stream.get_stats()
-        print(
-                f"Stream ID: {res["stream_id"]}, Type: {res["type"]} \n"
-                f"{pre[1]} {batch} \n"
-                f"{pre[2]} {res["processed_count"], {res["ext"]}}"
-            )
+    print("\nBatch 1 Results:")
+    processor.process_all(batches)
 
-    print("=== Polymorphic Stream Processing ===")
-    print("Processing mixed stream types through unified interface...\n")
-    print("Batch 1 Results:\n")
-
-    stream_p = StreamProcessor()
-    stream_p.add_stream(sensor_stream)
-    stream_p.add_stream(sensor_transaction)
-    stream_p.add_stream(sensor_event)
-    stream_p.process_all(batches)
-
-    print("Stream filtering active: High-priority data only")
-    print("Filtered results: 2 critical sensor alerts, 1 large transaction\n")
-    print("All streams processed successfully. Nexus throughput optimal.")
+    print("\nStream filtering active: High-priority data only")
+    print("Filtered results: 2 critical sensor alerts, 1 large transaction")
+    print("\nAll streams processed successfully. Nexus throughput optimal")
 
 
 def main() -> None:
