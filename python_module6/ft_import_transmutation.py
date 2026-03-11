@@ -3,7 +3,7 @@ from alchemy.elements import create_water, create_fire
 from alchemy.potions import strength_potion
 from alchemy.potions import healing_potion as heal
 
-[create_water(), create_fire(), heal, alchemy.elements]
+[create_water, create_fire, heal, alchemy.elements]
 
 
 def main():

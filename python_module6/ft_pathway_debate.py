@@ -1,18 +1,17 @@
 import alchemy
-import alchemy.transmutation as transmutation
 from alchemy.transmutation.advanced import philosophers_stone, elixir_of_life
+from alchemy.transmutation.basic import lead_to_gold, stone_to_gem
 
 
 def main():
     try:
         print("=== Pathway Debate Mastery ===\n")
-
         print("Testing Absolute Imports (from basic.py):")
         print(
-            f"lead_to_gold(): {transmutation.lead_to_gold()}"
+            f"lead_to_gold(): {lead_to_gold()}"
         )
         print(
-            f"stone_to_gem(): {transmutation.stone_to_gem()}"
+            f"stone_to_gem(): {stone_to_gem()}"
         )
         print()
 
@@ -36,6 +35,7 @@ def main():
         )
         print()
         print("Both pathways work! Absolute: clear, Relative: concise")
+
     except Exception as e:
         print(e)
 
