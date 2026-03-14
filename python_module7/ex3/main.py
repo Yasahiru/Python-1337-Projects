@@ -15,14 +15,12 @@ def main():
     print(f"Factory: {factory.__class__.__name__}")
     print(f"Strategy: {strategy.__class__.__name__}")
 
-    types = factory.get_supported_types()
-    print(f"Available types: {types}\n")
+    card_types = factory.get_supported_types()
+    print(f"Available types: {card_types}")
+    for key, value in card_types.items():
+        print(value)
 
-    card1 = factory.create_creature()
-    card2 = factory.create_creature()
-    card3 = factory.create_spell()
-
-    hand = [card1, card2, card3]
+    hand = ""
     battlefield = []
 
     print("Simulating aggressive turn...")
