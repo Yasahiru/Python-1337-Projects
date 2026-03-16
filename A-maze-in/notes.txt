@@ -1,0 +1,13 @@
+
+A Mazeing file structre:
+
+    a_maze_ing/
+    │
+    ├── cell.py
+    ├── maze.py
+    ├── generator.py
+    ├── solver.py
+    ├── validator.py
+    ├── exporter.py
+    ├── display.py
+    └── main.py

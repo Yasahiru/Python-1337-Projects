@@ -8,19 +8,12 @@ import random
 
 class FantasyCardFactory(CardFactory):
 
-    def __init__(self) -> None:
-        self.creatures = []
-        self.spells = []
-        self.artifacts = []
-
     def create_creature(self) -> CreatureCard:
         card = CreatureCard("Dragon", 5, "LEGENDARY", 7, 5)
-        self.creatures.append(card)
         return (card)
 
     def create_spell(self) -> SpellCard:
         card = SpellCard("Fireball", 3, "RARE", "damage")
-        self.spells.append(card)
         return (card)
 
     def create_artifact(self, name_or_power) -> ArtifactCard:
@@ -28,14 +21,13 @@ class FantasyCardFactory(CardFactory):
             "Mana Crystal", 2,
             "Rare", 12, "Permanent: +1 mana per turn"
         )
-        self.artifacts.append(card)
         return card
 
     def create_themed_deck(self, size: int) -> Dict:
         deck = {
-            "creatures": self.creatures,
-            "spells": self.spells,
-            "artifacts": self.artifacts
+            "creatures": self.create_creature(),
+            "spells": self.create_spell(),
+            "artifacts": self.create_artifact()
         }
 
         for _ in range(size):
@@ -49,9 +41,12 @@ class FantasyCardFactory(CardFactory):
                 deck["artifacts"].append(self.create_artifact())
         return deck
 
-    def get_supported_types(self) -> dict:
+    def available_types(self):
         return {
-            "creatures": self.creatures,
-            "spell": self.spells,
-            "artifact": self.artifacts
+            "creatures": ["dragon", "goblin"],
+            "spells": ["fireball"],
+            "artifacts": ["mana_ring"],
         }
+
+    def get_supported_types(self) -> Dict:
+        ...

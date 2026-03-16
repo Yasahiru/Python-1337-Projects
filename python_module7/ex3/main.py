@@ -5,52 +5,48 @@ from ex3.GameEngine import GameEngine
 
 def main():
 
-    print("=== DataDeck Game Engine ===\n")
-    print("Configuring Fantasy Card Game...")
+    try:
+        print("=== DataDeck Game Engine ===\n")
 
-    factory = FantasyCardFactory()
-    strategy = AggressiveStrategy()
-    engine = GameEngine()
+        factory = FantasyCardFactory()
+        strategy = AggressiveStrategy()
 
-    print(f"Factory: {factory.__class__.__name__}")
-    print(f"Strategy: {strategy.__class__.__name__}")
+        print("Configuring Fantasy Card Game...")
+        print("Factory:", factory.__class__.__name__)
+        print("Strategy:", strategy.__class__.__name__)
+        print("Available types:", factory.available_types())
 
-    card_types = factory.get_supported_types()
-    print(f"Available types: {card_types}")
-    for key, value in card_types.items():
-        print(value)
+        hand = [
+            factory.create_creature(),
+            factory.create_creature(),
+            factory.create_spell(),
+        ]
 
-    hand = ""
-    battlefield = []
+        engine = GameEngine()
+        engine.configure_engine(factory, strategy, hand, "arena", 1)
 
-    print("Simulating aggressive turn...")
-    print(f"Hand: {hand}")
+        print("\nSimulating aggressive turn...")
+        print("Hand:", end=" ")
+        for card in hand:
+            print(card.name, end=" ")
+            print(f" ({card.cost})", end=", ")
 
-    engine.configure_engine(
-        factory=factory,
-        strategy=strategy,
-        hand=hand,
-        battlefield=battlefield,
-        turn_count=0
-    )
+        actions = engine.simulate_turn()
 
-    actions = engine.simulate_turn()
+        print("\n\nTurn execution:")
+        print("Strategy:", strategy.__class__.__name__)
+        print("Actions:", actions)
 
-    print("\nTurn execution:")
-    print(f"Strategy: {strategy.get_strategy_name()}")
-    print(f"Actions: {actions}")
+        report = engine.get_engine_status()
 
-    report = {
-        "turns_simulated": engine.turn_count,
-        "strategy_used": strategy.get_strategy_name(),
-        "total_damage": actions.get("damage_dealt", 0),
-        "cards_created": 3
-    }
+        print("\nGame Report:")
+        print(report)
 
-    print("\nGame Report:")
-    print(f"{report}\n")
+        print("\nAbstract Factory + Strategy Pattern:"
+              " Maximum flexibility achieved!")
 
-    print("Abstract Factory + Strategy Pattern: Maximum flexibility achieved!")
+    except Exception as e:
+        print(e)
 
 
 if __name__ == "__main__":

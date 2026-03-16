@@ -22,8 +22,8 @@ class GameEngine:
 
     def get_engine_status(self) -> dict:
         return {
-            "turn": self.turn_count,
-            "hand_size": len(self.hand),
-            "battlefield_size": len(self.battlefield),
-            "strategy": self.strategy.get_strategy_name()
+            "turns_simulated": self.turn_count,
+            "strategy_used": self.strategy.__class__.__name__,
+            "total_damage": "damage_dealt",
+            "cards_created": len(self.hand),
         }

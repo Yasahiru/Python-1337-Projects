@@ -5,21 +5,21 @@ from ex3.GameStrategy import GameStrategy
 
 class AggressiveStrategy(GameStrategy):
     def execute_turn(self, hand: list, battlefield: list) -> dict:
-        played_cards = []
-        attacks = []
+        cards_played = []
+        mana_used = 0
+        damage = 0
 
         for card in hand:
-            if card.__class__.__name__ == "CreatureCard":
-                battlefield.append(card)
-                hand.remove(card)
-                played_cards.append(card.name)
-
-        for card in battlefield:
-            attacks.append(card.name)
+            if card.name in ["Goblin Warrior", "Lightning Bolt"]:
+                cards_played.append(card.name)
+                mana_used += card.cost
+                damage += card.cost
 
         return {
-            "played": played_cards,
-            "attacks": attacks
+            "cards_played": cards_played,
+            "mana_used": mana_used,
+            "targets_attacked": ["Enemy Player"],
+            "damage_dealt": damage,
         }
 
     def get_strategy_name(self) -> str:
