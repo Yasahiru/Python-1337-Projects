@@ -4,29 +4,33 @@ from ex4.TournamentCard import TournamentCard
 class TournamentPlatform:
 
     def __init__(self):
-        self.cards = []
+        self.cards = {}
         self.matches_played = 0
 
     def register_card(self, card: TournamentCard) -> str:
-        self.cards.append(card)
+        self.cards[card.card_id] = card
+        return card.card_id
 
     def create_match(self, card1_id: str, card2_id: str) -> dict:
-        if card1_id.attack(card2_id):
-            winner, loser = card1_id, card2_id
+        card1 = self.cards[card1_id]
+        card2 = self.cards[card2_id]
+
+        if card1.attack(card2):
+            winner, loser = card1, card2
         else:
-            winner, loser = card2_id, card1_id
+            winner, loser = card2, card1
 
-        winner.record_win()
-        loser.record_loss()
+        winner.update_wins(1)
+        loser.update_losses(1)
 
-        winner.update_rating(winner.rating + 16)
-        loser.update_rating(loser.rating - 16)
+        winner.rating += 16
+        loser.rating -= 16
 
         self.matches_played += 1
 
         return {
-            "winner": winner.card_id,
-            "loser": loser.card_id,
+            "winner": winner.name,
+            "loser": loser.name,
             "winner_rating": winner.rating,
             "loser_rating": loser.rating,
         }
@@ -39,8 +43,10 @@ class TournamentPlatform:
         )
 
     def generate_tournament_report(self) -> dict:
-        _sum = sum(c.rating for c in self.cards.values())
-        avg_rating = _sum // len(self.cards)
+        total = 0
+        for card in self.cards.values():
+            total += card.rating
+        avg_rating = total / len(self.cards)
 
         return {
             "total_cards": len(self.cards),

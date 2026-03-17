@@ -1,44 +1,41 @@
-from ex0.CreatureCard import CreatureCard
+from ex4.TournamentCard import TournamentCard
 from ex4.TournamentPlatform import TournamentPlatform
 
 
 def main():
-
-    print("=== DataDeck Tournament Platform ===")
+    print("=== DataDeck Tournament Platform ===\n")
 
     platform = TournamentPlatform()
 
-    print("Registering Tournament Cards...")
+    print("Registering Tournament Cards...\n")
 
-    platform.register_card(
-        CreatureCard("Fire Dragon", 1200, "dragon", 12, 10))
-    platform.register_card(
-        CreatureCard("Ice Wizard", 1150, "wizard", 10, 11))
+    card1 = TournamentCard("Fire Dragon", 12, "RARE")
+    card2 = TournamentCard("Ice Wizard", 10, "COMMON")
 
-    for card in [platform.cards]:
+    id1 = platform.register_card(card1)
+    id2 = platform.register_card(card2)
 
-        print(f"{card.name} (ID: {card.name}_001):")
+    for card in platform.cards.values():
+        print(f"{card.name} (ID: {card.card_id}):")
         print("- Interfaces: [Card, Combatable, Rankable]")
         print(f"- Rating: {card.rating}")
-        print(f"- Record: {card.record()}")
+        print(f"- Record: {card.record()}\n")
 
     print("Creating tournament match...")
 
-    result = platform.match(platform.cards)
-
-    print("Match result:", result)
+    result = platform.create_match(id1, id2)
+    print(f"Match result: {result}\n")
 
     print("Tournament Leaderboard:")
 
-    leaderboard = platform.leaderboard()
-
+    leaderboard = platform.get_leaderboard()
     for i, card in enumerate(leaderboard, 1):
         print(f"{i}. {card.name} - Rating: {card.rating} ({card.record()})")
 
-    print("Platform Report:")
-    print(platform.report())
+    print("\nPlatform Report:")
+    print(platform.generate_tournament_report())
 
-    print("=== Tournament Platform Successfully Deployed! ===")
+    print("\n=== Tournament Platform Successfully Deployed! ===")
     print("All abstract patterns working together harmoniously!")
 
 
