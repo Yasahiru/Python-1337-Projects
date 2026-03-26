@@ -6,14 +6,15 @@ from direction import Direction
 class Maze:
     """Represents the maze grid."""
 
-    # def __init__(self, width: int, height: int,
-    # entry: int, exit: int) -> None:
+    def __init__(
+        self, width: int, height: int,
+        entry: int, exit: int
+    ) -> None:
 
-    def __init__(self, width: int, height: int) -> None:
         self.width = width
         self.height = height
-        # self.entry = entry
-        # self.exit = exit
+        self.entry = entry
+        self.exit = exit
 
         self.grid: List[List[Cell]] = []
         self.initialize_grid()
@@ -37,7 +38,12 @@ class Maze:
         """ Check if coordinates are inside the maze."""
         return 0 <= x < self.width and 0 <= y < self.height
 
-    def get_neighbors(self, cell: Cell):
+    def reset_visits(self):
+        for row in self.grid:
+            for cell in row:
+                cell.visited = False
+
+    def get_neighbors(self, cell: Cell) -> List[Tuple[Direction, Cell]]:
 
         """ Return all valid adjacent cells """
         neighbors: List[Tuple[Direction, Cell]] = []

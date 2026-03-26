@@ -44,7 +44,7 @@ class MazeGenerator:
 
     def _get_unvisited_neighbors(
         self, cell: Cell, maze: Maze
-    ) -> List[Tuple[Tuple[int, int], Cell]]:
+    ) -> List[Tuple[Direction, Cell]]:
 
         neighbors = maze.get_neighbors(cell)
         result = []

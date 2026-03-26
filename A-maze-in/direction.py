@@ -19,12 +19,12 @@ class Direction(IntEnum):
         raise ValueError("Invalid Direction")
 
     def opposite(self) -> "Direction":
-        if self == Direction.N:
-            return (Direction.S)
-        elif self == Direction.S:
-            return (Direction.N)
-        elif self == Direction.E:
-            return (Direction.W)
-        elif self == Direction.W:
-            return (Direction.E)
-        raise ValueError("Invalid Direction")
+        return Direction(15 - self)
+
+
+ALL_DIRECTIONS = (
+    Direction.N
+    | Direction.E
+    | Direction.S
+    | Direction.W
+)

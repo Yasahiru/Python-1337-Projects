@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from direction import Direction
+from direction import Direction, ALL_DIRECTIONS
 
 
 @dataclass
@@ -8,12 +8,7 @@ class Cell:
     x: int
     y: int
     visited: bool = False
-    walls: int = (
-        Direction.N
-        | Direction.E
-        | Direction.S
-        | Direction.W
-    )
+    walls: int = ALL_DIRECTIONS
 
     def has_wall(self, direction: Direction) -> bool:
         """Check if a wall exists in the given direction."""
@@ -29,4 +24,4 @@ class Cell:
 
     def is_fully_bordered(self) -> bool:
         """Check if all walls are present."""
-        return (self.walls == 15)
+        return (self.walls == ALL_DIRECTIONS)
