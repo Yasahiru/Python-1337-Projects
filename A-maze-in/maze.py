@@ -8,13 +8,13 @@ class Maze:
 
     def __init__(
         self, width: int, height: int,
-        entry: int, exit: int
+        # entry: int, exit: int
     ) -> None:
 
         self.width = width
         self.height = height
-        self.entry = entry
-        self.exit = exit
+        # self.entry = entry
+        # self.exit = exit
 
         self.grid: List[List[Cell]] = []
         self.initialize_grid()
