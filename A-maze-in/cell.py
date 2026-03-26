@@ -1,26 +1,27 @@
 from dataclasses import dataclass
-from enum import IntEnum
+from direction import Direction, ALL_DIRECTIONS
 
 
 @dataclass
 class Cell:
-    N, E, S, W = 1, 2, 4, 8
+
     x: int
     y: int
-    walls: int = N | E | S | W
     visited: bool = False
+    walls: int = ALL_DIRECTIONS
 
-    """Check if a wall exists in the given direction."""
-    def has_wall(self, direction: int) -> bool:
+    def has_wall(self, direction: Direction) -> bool:
+        """Check if a wall exists in the given direction."""
         return bool(self.walls & direction)
 
-    """Remove a wall from the cell."""
-    def remove_wall(self, direction: int) -> None:
+    def remove_wall(self, direction: Direction) -> None:
+        """Remove a wall in the given direction."""
         self.walls &= ~direction
 
+    def add_wall(self, direction: Direction) -> None:
+        """Add a wall in the given direction."""
+        self.walls |= direction
 
-class Direction(IntEnum):
-    NORTH = 1
-    EAST = 2
-    SOUTH = 4
-    WEST = 8
+    def is_fully_bordered(self) -> bool:
+        """Check if all walls are present."""
+        return (self.walls == ALL_DIRECTIONS)

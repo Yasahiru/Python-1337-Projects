@@ -4,32 +4,30 @@ from ex4.Rankable import Rankable
 
 
 class TournamentCard(Card, Combatable, Rankable):
-    def __init__(
-        self, name: str, cost: int, rarity: str,
-        wins, losses
-    ) -> None:
+
+    def __init__(self, name, cost, rarity):
         super().__init__(name, cost, rarity)
-        self.wins = wins
-        self.losses = losses
+        self.rating = 1000
+        self.wins = 0
+        self.losses = 0
+        self.card_id = f"{name}_001"
 
-    # Card.py
     def play(self, game_state: dict) -> dict:
-        ...
+        return {"action": f"{self.name} played"}
 
-    # Combatable
-    def attack(self, target) -> dict:
-        ...
+    def attack(self, target) -> bool:
+        return self.cost >= target.cost
 
-    def defend(self, incoming_damage: int) -> dict:
-        ...
+    def defend(self, attacker) -> bool:
+        return self.cost >= attacker.cost
 
     def get_combat_stats(self) -> dict:
-        ...
+        return {
+            "cost": self.cost
+        }
 
-    # Rankable
     def calculate_rating(self) -> int:
-        rating = (self.wins * 10) - (self.losses * 12)
-        return (rating)
+        return self.rating
 
     def update_wins(self, wins: int) -> None:
         self.wins += wins
@@ -38,8 +36,11 @@ class TournamentCard(Card, Combatable, Rankable):
         self.losses += losses
 
     def get_rank_info(self) -> dict:
-        ...
+        return {
+            "rating": self.rating,
+            "wins": self.wins,
+            "losses": self.losses
+        }
 
-    #  Tournament card
-    def get_tournament_stats(self) -> dict:
-        ...
+    def record(self) -> str:
+        return f"{self.wins}W-{self.losses}L"
