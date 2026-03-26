@@ -10,7 +10,12 @@ def main():
         conf = Config()
         conf.load(sys.argv[1])
 
-        maze = Maze(conf.width, conf.height)
+        maze = Maze(
+            conf.width, conf.height,
+            conf.entry, conf.exit,
+            conf.perfect
+        )
+
         generator = MazeGenerator()
         generator.generate(maze)
         generator.print_maze(maze)
