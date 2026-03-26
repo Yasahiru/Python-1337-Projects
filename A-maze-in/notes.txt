@@ -5,9 +5,9 @@ a_maze_ing/
     ├── config.py          ✅
     ├── direction.py       ✅
     ├── cell.py            ✅
-    ├── maze.py            🔜
-    ├── generator.py       🔜
-    ├── solver.py          🔜
+    ├── maze.py            ✅
+    ├── generator.py       🔜 - on going ( DFS - PRIM )
+    ├── solver.py          🔜  (BFS)
     ├── validator.py       🔜
     ├── exporter.py        🔜
     ├── display.py         🔜
@@ -15,7 +15,7 @@ a_maze_ing/
 
 
 
-🧩 4. TASK BREAKDOWN (Notion style)
+🧩 4. TASK BREAKDOWN 
 
 🔷 PHASE 1 — Maze Core (shared start)
     Task 1.1 — Update Maze constructor
