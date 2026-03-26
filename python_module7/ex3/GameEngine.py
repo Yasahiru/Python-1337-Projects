@@ -1,18 +1,22 @@
-from ex0.Card import Card
+# from ex0.Card import Card
 from ex3.CardFactory import CardFactory
 from ex3.GameStrategy import GameStrategy
-from typing import List
+# from typing import List
 
 
 class GameEngine:
     def configure_engine(
         self, factory: CardFactory, strategy: GameStrategy,
-        hand: List[Card], battlefield: str, turn_count: int
+        turn_count: int
     ) -> None:
         self.strategy = strategy
         self.factory = factory
-        self.hand = hand
-        self.battlefield = battlefield
+        self.hand = [
+            factory.create_creature(),
+            factory.create_creature(),
+            factory.create_spell(),
+        ]
+        self.battlefield = "arena"
         self.turn_count = turn_count
 
     def simulate_turn(self) -> dict:

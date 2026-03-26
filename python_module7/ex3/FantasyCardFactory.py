@@ -1,4 +1,5 @@
 from ex0.CreatureCard import CreatureCard
+from ex0.Card import Card
 from ex1.SpellCard import SpellCard
 from ex1.ArtifactCard import ArtifactCard
 from ex3.CardFactory import CardFactory
@@ -8,8 +9,14 @@ import random
 
 class FantasyCardFactory(CardFactory):
 
-    def create_creature(self) -> CreatureCard:
-        card = CreatureCard("Dragon", 5, "LEGENDARY", 7, 5)
+    def create_creature(
+            self, name_or_power: str | int | None = None
+    ) -> Card:
+        card: Card = None
+        if (isinstance(name_or_power, str)):
+            card = CreatureCard("Dragon", 5, "LEGENDARY", 7, 5)
+        else:
+            card = CreatureCard("Goblin Warrior", 2, "LEGENDARY", 4, 3)
         return (card)
 
     def create_spell(self) -> SpellCard:

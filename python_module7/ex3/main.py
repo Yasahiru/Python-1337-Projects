@@ -16,18 +16,12 @@ def main():
         print("Strategy:", strategy.__class__.__name__)
         print("Available types:", factory.available_types())
 
-        hand = [
-            factory.create_creature(),
-            factory.create_creature(),
-            factory.create_spell(),
-        ]
-
         engine = GameEngine()
-        engine.configure_engine(factory, strategy, hand, "arena", 1)
+        engine.configure_engine(factory, strategy, 1)
 
         print("\nSimulating aggressive turn...")
         print("Hand:", end=" ")
-        for card in hand:
+        for card in engine.hand:
             print(card.name, end=" ")
             print(f" ({card.cost})", end=", ")
 
