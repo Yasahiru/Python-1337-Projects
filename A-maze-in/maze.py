@@ -66,39 +66,3 @@ class Maze:
         """ Remove walls between two adjacent cells in the given direction."""
         cell.remove_wall(direction)
         neighbor.remove_wall(direction.opposite())
-
-    def _creates_open_area_3x2_or_2x3(self, maze, x, y, direction) -> bool:
-        """
-        Very local heuristic check:
-        prevents forming 2x3 / 3x2 fully open blocks.
-        """
-
-        dx, dy = direction.delta()
-        nx, ny = x + dx, y + dy
-
-        # check a 3x3 area around the removed wall
-        for yy in range(min(y, ny) - 1, max(y, ny) + 2):
-            for xx in range(min(x, nx) - 1, max(x, nx) + 2):
-
-                if not maze.in_bounds(xx, yy):
-                    continue
-
-                cell = maze.get_cell(xx, yy)
-
-                # Count open connections in this small region
-                open_sides = 0
-
-                for d in Direction:
-                    ddx, ddy = d.delta()
-                    ax, ay = xx + ddx, yy + ddy
-
-                    if maze.in_bounds(ax, ay):
-                        neighbor = maze.get_cell(ax, ay)
-                        if not cell.has_wall(d):
-                            open_sides += 1
-
-                # 🚨 heuristic: too open region => likely block
-                if open_sides >= 3:
-                    return True
-
-        return False

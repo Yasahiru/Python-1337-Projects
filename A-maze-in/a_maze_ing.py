@@ -1,6 +1,8 @@
 from generator import MazeGenerator
 from maze import Maze
 from config_parser import Config
+from solver import MazeSolver
+
 import sys
 
 
@@ -19,6 +21,10 @@ def main():
         generator = MazeGenerator()
         generator.generate(maze)
         generator.print_maze(maze)
+
+        solver = MazeSolver()
+        path = solver.solve(maze)
+        print(path)
 
     except Exception as e:
         print(e)

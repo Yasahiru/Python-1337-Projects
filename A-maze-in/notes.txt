@@ -105,3 +105,4 @@ Integration (main.py)
 Cursor / interactive mode
 
 
+_creates_open_area_3x2_or_2x3
