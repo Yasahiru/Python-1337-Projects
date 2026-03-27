@@ -67,33 +67,18 @@ class MazeGenerator:
         return random.choice(neighbors)
 
     def _add_imperfections(self, maze: Maze) -> None:
-        rate = 0.2
-
+        rate = 0.15
         for y in range(maze.height):
             for x in range(maze.width):
                 cell = maze.get_cell(x, y)
-
-                for direction in Direction:
-                    if direction.name == "ALL":
+                for d in [Direction.E, Direction.S]:
+                    if not maze.in_bounds(x + d.delta()[0], y + d.delta()[1]):
                         continue
-
-                    dx, dy = direction.delta()
-                    nx, ny = x + dx, y + dy
-
-                    if not maze.in_bounds(nx, ny):
-                        continue
-
-                    if not cell.has_wall(direction):
-                        continue
-
-                    if random.random() >= rate:
-                        continue
-
-                    if self._creates_open_area_3x3(maze, x, y, direction):
-                        continue
-
-                    neighbor = maze.get_cell(nx, ny)
-                    maze.remove_wall_between(cell, neighbor, direction)
+                    if cell.has_wall(d) and random.random() < rate:
+                        if not self._creates_forbidden_area(maze, x, y, d):
+                            neighbor = maze.get_cell(x + d.delta()[0],
+                                                     y + d.delta()[1])
+                            maze.remove_wall_between(cell, neighbor, d)
 
     def _creates_open_area_3x3(
         self, maze: Maze, x: int, y: int, direction: Direction
