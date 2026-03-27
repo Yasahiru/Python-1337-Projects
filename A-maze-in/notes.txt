@@ -105,4 +105,14 @@ Integration (main.py)
 Cursor / interactive mode
 
 
-_creates_open_area_3x2_or_2x3
+Step 1: The "42" Stamp 
+    — We implement the placement logic first because it's static and easy to verify.
+
+Step 2: The $2\times2$ Safety Check 
+    — We write a robust function that checks if removing a wall is "legal" according to the subject.
+
+Step 3: The Imperfection Loop 
+    — We update _add_imperfections to use the safety check from Step 2.
+
+Step 4: Formatting & Hex 
+    — Once the maze is logically perfect, we handle the hexadecimal file output.

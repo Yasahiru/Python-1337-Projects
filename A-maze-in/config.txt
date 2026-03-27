@@ -1,8 +1,8 @@
 # should hanle comments
 
-WIDTH=10
-HEIGHT=10
+WIDTH=5
+HEIGHT=5
 ENTRY=0,0
-EXIT=7,8
+EXIT=3,4
 OUTPUT_FILE=maze.txt
-PERFECT=False
+PERFECT=True
