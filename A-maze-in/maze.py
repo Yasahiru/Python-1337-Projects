@@ -28,6 +28,14 @@ class Maze:
                 row.append(Cell(x, y))
             self.grid.append(row)
 
+    def reset_maze(self) -> None:
+        """Full reset: reset visited status AND restore all walls."""
+        from direction import ALL_DIRECTIONS
+        for row in self.grid:
+            for cell in row:
+                cell.visited = False
+                cell.walls = ALL_DIRECTIONS
+
     def get_cell(self, x: int, y: int) -> Cell:
         """ Return the cell at the given coordinates."""
         return self.grid[y][x]

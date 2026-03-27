@@ -99,9 +99,6 @@ class MazeGenerator:
         self, maze: Maze, x: int, y: int, direction: Direction
     ) -> bool:
         dx, dy = direction.delta()
-        # nx, ny = x + dx, y + dy
-
-        # simulate removal
         test_cells = []
         for yy in range(y - 1, y + 2):
             for xx in range(x - 1, x + 2):
@@ -118,77 +115,70 @@ class MazeGenerator:
                 open_count += 1
         return open_count >= 6  # heuristic threshold
 
-    def print_maze(
-        self, maze: Maze, path: str = "", animate: bool = False
-    ) -> None:
 
-        # 🎨 COLORS
-        WALL = "\033[42m  \033[0m"   # green
-        PATH = "\033[44m  \033[0m"   # blue
-        EMPTY = "  "
-        START = "\033[45m  \033[0m"
-        END = "\033[41m  \033[0m"
-
-        H = maze.height * 2 + 1
-        W = maze.width * 2 + 1
-
-        canvas = [[WALL for _ in range(W)] for _ in range(H)]
-
-        # 🪜 CARVE PATHS (THIS IS THE IMPORTANT PART)
-        for y in range(maze.height):
-            for x in range(maze.width):
-                cell = maze.get_cell(x, y)
-
-                cy = y * 2 + 1
-                cx = x * 2 + 1
-
-                canvas[cy][cx] = EMPTY  # cell itself
-
-                for d in (Direction.N, Direction.E, Direction.S, Direction.W):
-                    if not cell.has_wall(d):
-                        dx, dy = d.delta()
-                        canvas[cy + dy][cx + dx] = EMPTY  # open passage
-
-        # 🪜 BUILD PATH
-        path_cells = []
-        x, y = maze.entry
-        path_cells.append((x, y))
-
+def print_maze(
+        maze: Maze,
+        path: str = "",
+        show_path: bool = True,
+        wall_color: str = "\033[42m",  # Green
+        animate: bool = False
+) -> None:
+    """
+    Visual representation of the maze for the terminal.
+    Shows walls, entry, exit, and the solution path.
+    """
+    RESET = "\033[0m"
+    WALL = f"{wall_color}  {RESET}"
+    PATH = "\033[44m  \033[0m"   # Blue
+    EMPTY = "  "
+    START = "\033[45m  \033[0m"  # Purple
+    END = "\033[41m  \033[0m"    # Red
+    # Map the bitmask-based grid to a displayable 2D canvas [cite: 187]
+    h_canvas, w_canvas = maze.height * 2 + 1, maze.width * 2 + 1
+    canvas = [[WALL for _ in range(w_canvas)] for _ in range(h_canvas)]
+    for y in range(maze.height):
+        for x in range(maze.width):
+            cell = maze.get_cell(x, y)
+            cy, cx = y * 2 + 1, x * 2 + 1
+            canvas[cy][cx] = EMPTY
+            # Carve passages based on bitmask 
+            for d in (Direction.N, Direction.E, Direction.S, Direction.W):
+                if not cell.has_wall(d):
+                    dx, dy = d.delta()
+                    canvas[cy + dy][cx + dx] = EMPTY
+    # Calculate path coordinates from the N,E,S,W string [cite: 157]
+    path_coords: List[Tuple[int, int]] = []
+    if path:
+        curr_x, curr_y = maze.entry
+        path_coords.append((curr_x, curr_y))
         for move in path:
             d = Direction[move]
             dx, dy = d.delta()
-            x += dx
-            y += dy
-            path_cells.append((x, y))
+            curr_x, curr_y = curr_x + dx, curr_y + dy
+            path_coords.append((curr_x, curr_y))
 
-        # 🪜 ANIMATION
-        def draw(step=None):
-            print("\033[H\033[J", end="")
-
-            for y in range(H):
-                for x in range(W):
-
-                    # convert to maze cell
-                    if y % 2 == 1 and x % 2 == 1:
-                        mx, my = x // 2, y // 2
-
-                        if (mx, my) == maze.entry:
-                            print(START, end="")
-                            continue
-                        if (mx, my) == maze.exit:
-                            print(END, end="")
-                            continue
-
-                        if step is not None and (mx, my) in path_cells[:step]:
+    def render(step: int = None) -> None:
+        print("\033[H\033[J", end="")  # Clear screen
+        for y in range(h_canvas):
+            for x in range(w_canvas):
+                if y % 2 == 1 and x % 2 == 1:
+                    mx, my = x // 2, y // 2
+                    if (mx, my) == maze.entry:
+                        print(START, end="")
+                        continue
+                    if (mx, my) == maze.exit:
+                        print(END, end="")
+                        continue
+                    if show_path and path_coords:
+                        limit = step if step is not None else len(path_coords)
+                        if (mx, my) in path_coords[:limit]:
                             print(PATH, end="")
                             continue
-
-                    print(canvas[y][x], end="")
-                print()
-
-        if animate:
-            for i in range(len(path_cells) + 1):
-                draw(i)
-                time.sleep(0.03)
-        else:
-            draw()
+                print(canvas[y][x], end="")
+            print()
+    if animate and show_path:
+        for i in range(1, len(path_coords) + 1):
+            render(i)
+            time.sleep(0.05)
+    else:
+        render()
