@@ -2,34 +2,43 @@ from generator import MazeGenerator, print_maze
 from maze import Maze
 from config_parser import Config
 from solver import MazeSolver
-
+from typing import List
 import sys
 
 
 # ------------------ Run Example ------------------
 def main_loop(maze_obj: Maze, generator: MazeGenerator, solver: MazeSolver):
-    show_path = False
-    colors = ["\033[42m", "\033[43m", "\033[46m", "\033[47m"]  # G, Y, C, W
-    color_idx = 0
-    path_str = solver.solve(maze_obj)
+    show_path: bool = False
+    animate: bool = False
+    colors: List[str] = ["\033[42m", "\033[43m", "\033[46m", "\033[47m"]
+    color: int = 0
+    path: str = solver.solve(maze_obj)
 
     while True:
-        print_maze(maze_obj, path_str, show_path, colors[color_idx])
-        print(
-            "\n1: Re-generate | 2: Show/Hide Path | 3: Change Color | Q: Quit"
-        )
+        try:
+            print_maze(maze_obj, path, show_path, colors[color], animate)
+            print(
+                "\n1: Re-generate | 2: Show/Hide Path |"
+                " 3: Change Color | 4: Animation | Q: Quit"
+            )
 
-        choice = input("Choice? ").lower()
-        if choice == '1':
-            maze_obj.reset_maze()
-            generator.generate(maze_obj)
-            path_str = solver.solve(maze_obj)
-        elif choice == '2':
-            show_path = not show_path
-        elif choice == '3':
-            color_idx = (color_idx + 1) % len(colors)
-        elif choice == 'q':
-            break
+            choice = input("Choice? ").lower()
+            if choice == '1':
+                maze_obj.reset_maze()
+                generator.generate(maze_obj)
+                path = solver.solve(maze_obj)
+            elif choice == '2':
+                show_path = True
+            elif choice == '3':
+                color = (color + 1) % len(colors)
+            elif choice == '4':
+                animate = not animate
+            elif choice == 'q':
+                break
+            else:
+                print("invalid key")
+        except KeyboardInterrupt:
+            pass
 
 
 def main():
