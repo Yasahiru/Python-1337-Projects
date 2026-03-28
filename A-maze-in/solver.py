@@ -67,7 +67,7 @@ class MazeSolver:
 
         while parent[current] is not None:
             prev, direction = parent[current]
-            path.append(direction.name)  # "N", "E", "S", "W"
+            path.append(direction.name)
             current = prev
 
         path.reverse()
