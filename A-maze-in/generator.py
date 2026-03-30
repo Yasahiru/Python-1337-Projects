@@ -3,7 +3,7 @@ import time
 from typing import List, Tuple
 
 from direction import Direction
-from cell import Cell
+from model.cell import Cell
 from maze import Maze
 
 
@@ -31,7 +31,6 @@ class MazeGenerator:
                 direction, next_cell = self._choose_random_neighbor(neighbors)
 
                 maze.remove_wall_between(current, next_cell, direction)
-
                 stack.append(current)
 
                 current = next_cell
@@ -113,14 +112,14 @@ class MazeGenerator:
                     walls += 1
             if walls <= 1:
                 open_count += 1
-        return open_count >= 6  # heuristic threshold
+        return open_count >= 6
 
 
 def print_maze(
         maze: Maze,
         path: str = "",
         show_path: bool = True,
-        wall_color: str = "\033[42m",  # Green
+        wall_color: str = "\033[42m",
         animate: bool = False
 ) -> None:
     """
@@ -129,11 +128,11 @@ def print_maze(
     """
     RESET = "\033[0m"
     WALL = f"{wall_color}  {RESET}"
-    PATH = "\033[44m  \033[0m"   # Blue
+    PATH = "\033[44m  \033[0m"
     EMPTY = "  "
-    START = "\033[45m  \033[0m"  # Purple
-    END = "\033[41m  \033[0m"    # Red
-    # Map the bitmask-based grid to a displayable 2D canvas [cite: 187]
+    START = "\033[45m  \033[0m"
+    END = "\033[41m  \033[0m"
+
     h_canvas, w_canvas = maze.height * 2 + 1, maze.width * 2 + 1
     canvas = [[WALL for _ in range(w_canvas)] for _ in range(h_canvas)]
     for y in range(maze.height):
@@ -141,12 +140,12 @@ def print_maze(
             cell = maze.get_cell(x, y)
             cy, cx = y * 2 + 1, x * 2 + 1
             canvas[cy][cx] = EMPTY
-            # Carve passages based on bitmask 
+
             for d in (Direction.N, Direction.E, Direction.S, Direction.W):
                 if not cell.has_wall(d):
                     dx, dy = d.delta()
                     canvas[cy + dy][cx + dx] = EMPTY
-    # Calculate path coordinates from the N,E,S,W string [cite: 157]
+
     path_coords: List[Tuple[int, int]] = []
     if path:
         curr_x, curr_y = maze.entry
@@ -158,7 +157,7 @@ def print_maze(
             path_coords.append((curr_x, curr_y))
 
     def render(step: int = None) -> None:
-        print("\033[H\033[J", end="")  # Clear screen
+        print("\033[H\033[J", end="")
         for y in range(h_canvas):
             for x in range(w_canvas):
                 if y % 2 == 1 and x % 2 == 1:

@@ -13,7 +13,7 @@ def main_loop(maze_obj: Maze, generator: MazeGenerator, solver: MazeSolver):
     path_str = solver.solve(maze_obj)
 
     while True:
-        print_maze(maze_obj, path_str, show_path, colors[color_idx])
+        print_maze(maze_obj, path_str, show_path, colors[color_idx], True)
         print(
             "\n1: Re-generate | 2: Show/Hide Path | 3: Change Color | Q: Quit"
         )
@@ -49,6 +49,8 @@ def main():
 
     except Exception as e:
         print(e)
+    except KeyboardInterrupt:
+        ...
 
 
 if __name__ == "__main__":

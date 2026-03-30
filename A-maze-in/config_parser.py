@@ -1,4 +1,4 @@
-from typing import Tuple, Dict
+from typing import Tuple, Dict, Optional
 
 
 class Config:
@@ -11,6 +11,7 @@ class Config:
         self.exit: Tuple[int, int] = (0, 0)
         self.output_file: str = ""
         self.perfect: bool = False
+        self.seed: Optional[int] = None
 
     def load(self, filename: str) -> None:
         """Load, parse, validate, and assign configuration."""
@@ -75,6 +76,7 @@ class Config:
             self.exit = self._parse_coordinates(data["EXIT"])
             self.output_file = data["OUTPUT_FILE"]
             self.perfect = self._parse_bool(data["PERFECT"])
+            # self.seed = data["SEED"] | None
         except ValueError as e:
             raise ValueError(f"Invalid value: {e}")
 
