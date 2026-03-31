@@ -49,7 +49,9 @@ class Config:
         if "=" not in line:
             raise ValueError(f"Invalid line: {line}")
 
-        key, value = line.split("=", 1)
+        if "#" in line:
+            line = line.split("#", 1)[0]
+        key, value = line.split("=")
         return key.strip().upper(), value.strip()
 
     def _validate_keys(self, data: Dict[str, str]) -> None:
@@ -76,7 +78,10 @@ class Config:
             self.exit = self._parse_coordinates(data["EXIT"])
             self.output_file = data["OUTPUT_FILE"]
             self.perfect = self._parse_bool(data["PERFECT"])
-            # self.seed = data["SEED"] | None
+            if "SEED" in data:
+                self.seed = int(data["SEED"])
+            else:
+                self.seed = None
         except ValueError as e:
             raise ValueError(f"Invalid value: {e}")
 

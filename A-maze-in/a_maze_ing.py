@@ -1,7 +1,7 @@
-from generator import MazeGenerator, print_maze
+from generator import MazeGenerator
 from config_parser import Config
 from solver import MazeSolver
-from maze import Maze
+from maze import Maze, print_maze
 import sys
 
 
@@ -20,12 +20,14 @@ def main_loop(maze_obj: Maze, generator: MazeGenerator, solver: MazeSolver):
 
         choice = input("Choice? ").lower()
         if choice == '1':
+            show_path = False
             maze_obj.reset_maze()
             generator.generate(maze_obj)
             path_str = solver.solve(maze_obj)
         elif choice == '2':
             show_path = not show_path
         elif choice == '3':
+            # show_path = False
             color_idx = (color_idx + 1) % len(colors)
         elif choice == 'q':
             break

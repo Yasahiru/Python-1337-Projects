@@ -103,6 +103,3 @@ Integration (main.py)
 
 🟢 STEP 6
 Cursor / interactive mode
-
-
-!!! regenearate button isn't working
