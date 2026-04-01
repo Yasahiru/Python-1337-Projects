@@ -1,6 +1,6 @@
 from typing import List, Tuple
 from model.cell import Cell
-from direction import Direction
+from direction import Direction, ALL_DIRECTIONS
 import time
 
 
@@ -19,6 +19,7 @@ class Maze:
         self.perfect = perfect
 
         self.grid: List[List[Cell]] = []
+        self.cells_42: set = set()
         self.initialize_grid()
 
     def initialize_grid(self) -> None:
@@ -32,6 +33,7 @@ class Maze:
     def reset_maze(self) -> None:
         """Full reset: reset visited status AND restore all walls."""
         from direction import ALL_DIRECTIONS
+        self.cells_42 = set()
         for row in self.grid:
             for cell in row:
                 cell.visited = False
@@ -86,10 +88,11 @@ def print_maze(
 ) -> None:
     """
     Visual representation of the maze for the terminal.
-    Shows walls, entry, exit, and the solution path.
+    Shows walls, entry, exit, the solution path, and the '42' pattern.
     """
     RESET = "\033[0m"
     WALL = f"{wall_color}  {RESET}"
+    CELL_42 = "\033[43m  \033[0m"   # yellow — the '42' pattern cells
     PATH = "\033[44m  \033[0m"
     EMPTY = "  "
     START = "\033[45m  \033[0m"
@@ -97,16 +100,29 @@ def print_maze(
 
     h_canvas, w_canvas = maze.height * 2 + 1, maze.width * 2 + 1
     canvas = [[WALL for _ in range(w_canvas)] for _ in range(h_canvas)]
+
+    # Use the 42-cell positions stored by the generator
+    cells_42: set = maze.cells_42
+
     for y in range(maze.height):
         for x in range(maze.width):
             cell = maze.get_cell(x, y)
             cy, cx = y * 2 + 1, x * 2 + 1
-            canvas[cy][cx] = EMPTY
 
-            for d in (Direction.N, Direction.E, Direction.S, Direction.W):
-                if not cell.has_wall(d):
-                    dx, dy = d.delta()
-                    canvas[cy + dy][cx + dx] = EMPTY
+            if (x, y) in cells_42:
+                canvas[cy][cx] = CELL_42
+                # fill the canvas gap between adjacent 42 cells
+                # so they render as one merged solid shape
+                for d in (Direction.N, Direction.E, Direction.S, Direction.W):
+                    if not cell.has_wall(d):
+                        dx, dy = d.delta()
+                        canvas[cy + dy][cx + dx] = CELL_42
+            else:
+                canvas[cy][cx] = EMPTY
+                for d in (Direction.N, Direction.E, Direction.S, Direction.W):
+                    if not cell.has_wall(d):
+                        dx, dy = d.delta()
+                        canvas[cy + dy][cx + dx] = EMPTY
 
     path_coords: List[Tuple[int, int]] = []
     if path:
@@ -130,6 +146,9 @@ def print_maze(
                     if (mx, my) == maze.exit:
                         print(END, end="")
                         continue
+                    if (mx, my) in cells_42:
+                        print(CELL_42, end="")
+                        continue
                     if show_path and path_coords:
                         limit = step if step is not None else len(path_coords)
                         if (mx, my) in path_coords[:limit]:
@@ -137,6 +156,7 @@ def print_maze(
                             continue
                 print(canvas[y][x], end="")
             print()
+
     if animate and show_path:
         for i in range(1, len(path_coords) + 1):
             render(i)

@@ -15,7 +15,8 @@ def main_loop(maze_obj: Maze, generator: MazeGenerator, solver: MazeSolver):
     while True:
         print_maze(maze_obj, path_str, show_path, colors[color_idx], True)
         print(
-            "\n1: Re-generate | 2: Show/Hide Path | 3: Change Color | Q: Quit"
+            "\n1: Re-generate | 2: Show/Hide Path | "
+            "3: Change Color | Q: Quit"
         )
 
         choice = input("Choice? ").lower()
@@ -27,7 +28,7 @@ def main_loop(maze_obj: Maze, generator: MazeGenerator, solver: MazeSolver):
         elif choice == '2':
             show_path = not show_path
         elif choice == '3':
-            # show_path = False
+            show_path = False
             color_idx = (color_idx + 1) % len(colors)
         elif choice == 'q':
             break
@@ -42,6 +43,7 @@ def main():
             conf.entry, conf.exit,
             conf.perfect
         )
+    
         solver = MazeSolver()
         generator = MazeGenerator()
         generator.generate(maze)
