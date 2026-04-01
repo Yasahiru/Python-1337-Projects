@@ -1,6 +1,6 @@
 from collections import deque
 from typing import Dict, Tuple, List, Optional
-from modl.cell import Cell
+
 from maze import Maze
 from direction import Direction
 
@@ -11,37 +11,51 @@ class MazeSolver:
     Returns path as a string of directions: NESW
     """
 
-    def bfs_solve(maze: Maze, start: Cell, end: Cell) -> List[Cell]:
+    def solve(self, maze: Maze) -> str:
+        start = maze.entry  # (x, y)
+        goal = maze.exit    # (x, y)
+
         queue = deque([start])
-        came_from: Dict[Tuple[int, int], Optional[Tuple[int, int]]] = {
-            (start.x, start.y): None
+
+        # parent: (x, y) -> ((px, py), direction_taken)
+        parent: Dict[
+            Tuple[int, int], Optional[Tuple[Tuple[int, int], Direction]]
+        ] = {
+            start: None
         }
-        visited = set()
-        visited.add((start.x, start.y))
 
         while queue:
-            current = queue.popleft()
-            if current == end:
-                break
+            x, y = queue.popleft()
 
-            for dir, neigh in maze.get_neighbors(current):
-                if not current.has_wall(dir):
-                    if (neigh.x, neigh.y) not in visited:
-                        queue.append(neigh)
-                        visited.add((neigh.x, neigh.y))
-                        came_from[(neigh.x, neigh.y)] = (current.x, current.y)
+            if (x, y) == goal:
+                return self._reconstruct_path(parent, goal)
 
-        path: List[Cell] = []
-        current_coords = (end.x, end.y)
-        while current_coords is not None:
-            x, y = current_coords
-            path.append(maze.get_cell(x, y))
-            current_coords = came_from.get(current_coords)
-        path.reverse()
-        return path
+            cell = maze.get_cell(x, y)
+
+            for direction in Direction:
+                # skip ALL if you added it in enum
+                if direction.name == "ALL":
+                    continue
+
+                # only move if NO wall
+                if cell.has_wall(direction):
+                    continue
+
+                dx, dy = direction.delta()
+                nx, ny = x + dx, y + dy
+
+                if not maze.in_bounds(nx, ny):
+                    continue
+
+                if (nx, ny) in parent:
+                    continue  # already visited
+
+                parent[(nx, ny)] = ((x, y), direction)
+                queue.append((nx, ny))
 
         # No path found (should not happen in valid maze)
         raise ValueError("No path found from entry to exit")
+
     def _reconstruct_path(
         self,
         parent: Dict[

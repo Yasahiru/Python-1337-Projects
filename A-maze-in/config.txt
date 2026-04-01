@@ -1,9 +1,9 @@
 # should hanle comments
 
-WIDTH=18
-HEIGHT=18  #sdfs
+WIDTH=12
+HEIGHT=12  #sdfs
 ENTRY=0,0#dfdsf
-EXIT=17,17#lkfljl
+EXIT=11,11#lkfljl
 OUTPUT_FILE=maze.txt
 SEED=0 #fdfd
 
