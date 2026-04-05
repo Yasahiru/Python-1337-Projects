@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from direction import Direction, ALL_DIRECTIONS
+from srcs.direction_class import Direction, ALL_DIRECTIONS
 
 
 @dataclass
@@ -24,4 +24,4 @@ class Cell:
 
     def is_fully_bordered(self) -> bool:
         """Check if all walls are present."""
-        return (self.walls == ALL_DIRECTIONS)
+        return self.walls == ALL_DIRECTIONS

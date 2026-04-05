@@ -29,9 +29,4 @@ class Direction(IntEnum):
             return Direction.E
 
 
-ALL_DIRECTIONS = (
-    Direction.N
-    | Direction.E
-    | Direction.S
-    | Direction.W
-)
+ALL_DIRECTIONS = Direction.N | Direction.E | Direction.S | Direction.W

@@ -1,8 +1,8 @@
 from collections import deque
 from typing import Dict, Tuple, List, Optional
 
-from maze import Maze
-from direction import Direction
+from srcs.display_class import Maze
+from srcs.direction_class import Direction
 
 
 class MazeSolver:
@@ -12,17 +12,14 @@ class MazeSolver:
     """
 
     def solve(self, maze: Maze) -> str:
-        start = maze.entry  # (x, y)
-        goal = maze.exit    # (x, y)
+        start = maze.entry
+        goal = maze.exit
 
         queue = deque([start])
 
-        # parent: (x, y) -> ((px, py), direction_taken)
-        parent: Dict[
-            Tuple[int, int], Optional[Tuple[Tuple[int, int], Direction]]
-        ] = {
-            start: None
-        }
+        # type hint:
+        # Dict[Tuple[int, int], Optional[Tuple[Tuple[int, int], Direction]]]
+        parent = {start: None}
 
         while queue:
             x, y = queue.popleft()
@@ -33,11 +30,9 @@ class MazeSolver:
             cell = maze.get_cell(x, y)
 
             for direction in Direction:
-                # skip ALL if you added it in enum
                 if direction.name == "ALL":
                     continue
 
-                # only move if NO wall
                 if cell.has_wall(direction):
                     continue
 
@@ -48,19 +43,17 @@ class MazeSolver:
                     continue
 
                 if (nx, ny) in parent:
-                    continue  # already visited
+                    continue
 
                 parent[(nx, ny)] = ((x, y), direction)
                 queue.append((nx, ny))
 
-        # No path found (should not happen in valid maze)
         raise ValueError("No path found from entry to exit")
 
     def _reconstruct_path(
         self,
-        parent: Dict[
-            Tuple[int, int], Optional[Tuple[Tuple[int, int], Direction]]],
-        goal: Tuple[int, int]
+        parent: Dict[Tuple[int, int], Optional[Tuple[Tuple[int, int], Direction]]],
+        goal: Tuple[int, int],
     ) -> str:
         path: List[str] = []
         current = goal

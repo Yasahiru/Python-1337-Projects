@@ -12,6 +12,7 @@ class Config:
         self.output_file: str = ""
         self.perfect: bool = False
         self.seed: Optional[int] = None
+        self.algo: str = ""
 
     def load(self, filename: str) -> None:
         """Load, parse, validate, and assign configuration."""
@@ -50,20 +51,13 @@ class Config:
             raise ValueError(f"Invalid line: {line}")
 
         if "#" in line:
-            line = line.split("#", 1)[0]
+            line = line.partition("#")[0]
         key, value = line.split("=")
         return key.strip().upper(), value.strip()
 
     def _validate_keys(self, data: Dict[str, str]) -> None:
         """Making sure all required keys exist."""
-        required_keys = {
-            "WIDTH",
-            "HEIGHT",
-            "ENTRY",
-            "EXIT",
-            "OUTPUT_FILE",
-            "PERFECT",
-        }
+        required_keys = {"WIDTH", "HEIGHT", "ENTRY", "EXIT", "OUTPUT_FILE", "PERFECT"}
 
         for key in required_keys:
             if key not in data:
@@ -78,6 +72,11 @@ class Config:
             self.exit = self._parse_coordinates(data["EXIT"])
             self.output_file = data["OUTPUT_FILE"]
             self.perfect = self._parse_bool(data["PERFECT"])
+            try:
+                algo = data["ALGO"].strip().upper()
+            except Exception:
+                algo = "DFS"
+            self.algo = algo
             if "SEED" in data:
                 self.seed = int(data["SEED"])
             else:
@@ -88,8 +87,8 @@ class Config:
     def _parse_coordinates(self, value: str) -> Tuple[int, int]:
         """Parse 'x,y' into (x, y)."""
         try:
-            x_str, y_str = value.split(",")
-            return int(x_str), int(y_str)
+            x, y = value.split(",")
+            return int(x), int(y)
         except (ValueError, IndexError):
             raise ValueError(f"Invalid coordinates: {value}")
 
