@@ -1,9 +1,4 @@
 from typing import Dict, Any, Final
-import matplotlib.pyplot as plt
-import importlib.metadata
-import importlib.util
-import pandas as pd
-import numpy as np
 import sys
 
 
@@ -19,6 +14,11 @@ missing: list[str] = []
 
 def dependencie_check() -> None:
     print("Checking dependencies:")
+    try:
+        import importlib.metadata
+        import importlib.util
+    except Exception as e:
+        print(e)
     for pkg, status in dependencies.items():
         spec = importlib.util.find_spec(pkg)
         if spec is not None:
@@ -38,6 +38,7 @@ def dependencie_check() -> None:
             print("To enter the construct with all programs, run:")
             print("For pip users:    pip install -r requirements.txt")
             print("For Poetry users: poetry install")
+            print()
             sys.exit(1)
 
 
@@ -48,6 +49,12 @@ def fetch_matrix_data() -> Dict[str, Any]:
     """
     Analyzes the distribution of Matrix signals using a Histogram.
     """
+    try:
+        import pandas as pd
+        import numpy as np
+        import matplotlib.pyplot as plt
+    except Exception as e:
+        print(e)
     try:
         print(
             "Analyzing Matrix data... Processing "
@@ -80,11 +87,13 @@ def fetch_matrix_data() -> Dict[str, Any]:
 
 
 def main() -> None:
+    print()
     print("LOADING STATUS: Loading programs...")
     dependencie_check()
     fetch_matrix_data()
     print("Analysis complete!")
     print("Results saved to: matrix_analysis.png")
+    print()
 
 
 if __name__ == "__main__":
