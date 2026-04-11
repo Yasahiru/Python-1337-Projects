@@ -1,4 +1,4 @@
-from typing import Dict, Any, Final
+from typing import Final
 import sys
 
 
@@ -45,12 +45,12 @@ def dependencie_check() -> None:
 DATA_POINTS: Final[int] = 1000
 
 
-def fetch_matrix_data() -> Dict[str, Any]:
+def fetch_matrix_data() -> None:
     """
     Analyzes the distribution of Matrix signals using a Histogram.
     """
     try:
-        import pandas as pd
+        import pandas as pd  # type: ignore
         import numpy as np
         import matplotlib.pyplot as plt
     except Exception as e:
