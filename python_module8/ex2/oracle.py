@@ -5,10 +5,6 @@ import sys
 
 
 def get_config() -> dict:
-    """
-    Retrieve configuration from environment variables.
-    Environment variables override .env values automatically.
-    """
     return {
         "mode": os.getenv("MATRIX_MODE"),
         "database": os.getenv("DATABASE_URL"),
@@ -19,9 +15,6 @@ def get_config() -> dict:
 
 
 def validate_config(config: dict) -> list:
-    """
-    Check for missing required configuration values.
-    """
     missing = []
 
     if not config["mode"]:
@@ -37,9 +30,6 @@ def validate_config(config: dict) -> list:
 
 
 def describe_database(mode: str) -> str:
-    """
-    Simulate different behavior for dev vs production.
-    """
     if mode == "development":
         return "Connected to local instance"
     elif mode == "production":
@@ -48,49 +38,51 @@ def describe_database(mode: str) -> str:
 
 
 def display_config(config: dict) -> None:
-    """
-    Display configuration in a readable format.
-    """
-    print("Configuration loaded:")
-    print(f"Mode: {config['mode']}")
-    print(f"Database: {describe_database(config['mode'])}")
-    print(f"API Access: {'Authenticated' if config['api_key'] else 'Missing'}")
-    print(f"Log Level: {config['log_level']}")
-    print(f"Zion Network: {'Online' if config['zion'] else 'Offline'}")
+    try:
+        print("Configuration loaded:")
+        print(f"Mode: {config['mode']}")
+        print(f"Database: {describe_database(config['mode'])}")
+        print(
+            f"""API Access: {
+                'Authenticated' if config['api_key'] else 'Missing'
+            }"""
+        )
+        print(f"Log Level: {config['log_level']}")
+        print(f"Zion Network: {'Online' if config['zion'] else 'Offline'}")
+    except Exception as e:
+        print(e)
 
 
 def security_check(config: dict) -> None:
-    """
-    Perform basic security checks.
-    """
-    print("\nEnvironment security check:")
+    try:
+        print("\nEnvironment security check:")
 
-    # Check .env presence
-    if os.path.exists(".env"):
-        print("[OK] .env file properly configured")
-    else:
-        print("[WARNING] No .env file found")
+        if config["api_key"] and "dev" not in config["api_key"].lower():
+            print("[OK] No hardcoded secrets detected")
+        else:
+            print("[WARNING] API key may be insecure or default")
 
-    # Simple check for hardcoded secrets (basic heuristic)
-    if config["api_key"] and "dev" not in config["api_key"].lower():
-        print("[OK] No obvious hardcoded dev secrets detected")
-    else:
-        print("[WARNING] API key may be insecure or default")
+        if os.path.exists(".env"):
+            print("[OK] .env file properly configured")
+        else:
+            print("[WARNING] No .env file found")
 
-    # Environment override capability
-    print("[OK] Environment variable overrides available")
+        print("[OK] Production overrides available")
+    except Exception as e:
+        print(e)
 
 
 def main() -> None:
+    print()
     print("ORACLE STATUS: Reading the Matrix...\n")
 
-    load_dotenv()()
+    load_dotenv()
     config = get_config()
 
     missing = validate_config(config)
 
     if missing:
-        print("⚠️ Missing configuration:")
+        print("Missing configuration:")
         for var in missing:
             print(f"- {var}")
 
@@ -102,6 +94,8 @@ def main() -> None:
 
     display_config(config)
     security_check(config)
+    print()
+    print("The Oracle sees all configurations.")
 
 
 if __name__ == "__main__":
