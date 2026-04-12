@@ -11,6 +11,9 @@ class Rank(str, Enum):
     captain = "captain"
     commander = "commander"
 
+    def __str__(self):
+        return self
+
 
 class CrewMember(BaseModel):
     member_id: str = Field(min_length=3, max_length=10)
@@ -63,23 +66,20 @@ class SpaceMission(BaseModel):
         return self
 
 
-def main() -> None:
-    print("Space Mission Crew Validation")
-    print("======================================")
-
+def valid_input() -> None:
     try:
         mission = SpaceMission(
             mission_id="M2024_MARS",
             mission_name="Mars Colony Establishment",
             destination="Mars",
-            launch_date="2025-01-01T10:00:00",
+            launch_date=datetime.now(),
             duration_days=900,
             budget_millions=2500.0,
             crew=[
                 CrewMember(
                     member_id="001",
                     name="Sarah Connor",
-                    rank="commander",
+                    rank=Rank.commander,
                     age=40,
                     specialization="Mission Command",
                     years_experience=10
@@ -87,7 +87,7 @@ def main() -> None:
                 CrewMember(
                     member_id="002",
                     name="John Smith",
-                    rank="lieutenant",
+                    rank=Rank.lieutenant,
                     age=35,
                     specialization="Navigation",
                     years_experience=6
@@ -95,7 +95,7 @@ def main() -> None:
                 CrewMember(
                     member_id="002",
                     name="Alice Johnson",
-                    rank="officer",
+                    rank=Rank.officer,
                     age=30,
                     specialization="Engineering",
                     years_experience=4
@@ -120,21 +120,21 @@ def main() -> None:
     except Exception as e:
         print(e)
 
-    print("======================================")
 
+def invalid_input() -> None:
     try:
         SpaceMission(
             mission_id="M_BAD001",
             mission_name="Test",
             destination="Mars",
-            launch_date="2025-01-01T10:00:00",
+            launch_date=datetime.now(),
             duration_days=100,
             budget_millions=100.0,
             crew=[
                 CrewMember(
                     member_id="003",
                     name="Thomas Chelby",
-                    rank="officer",
+                    rank=Rank.officer,
                     age=30,
                     specialization="Tech",
                     years_experience=2
@@ -143,7 +143,15 @@ def main() -> None:
         )
     except Exception as e:
         print("Expected validation error:")
-        print(e)
+        print(e.errors()[0]["msg"])
+
+
+def main() -> None:
+    print("\nSpace Mission Crew Validation")
+    print("======================================\n")
+    valid_input()
+    print("\n======================================")
+    invalid_input()
 
 
 if __name__ == "__main__":

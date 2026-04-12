@@ -19,6 +19,7 @@ def dependencie_check() -> None:
         import importlib.util
     except Exception as e:
         print(e)
+
     for pkg, status in dependencies.items():
         spec = importlib.util.find_spec(pkg)
         if spec is not None:
@@ -30,10 +31,12 @@ def dependencie_check() -> None:
                 missing.append(pkg)
         else:
             print()
-            print(
-                "CRITICAL FAILURE: Missing dependencies: "
-                f"{', '.join(missing)}"
-            )
+            print("CRITICAL FAILURE: Missing dependencies: ")
+            miss = []
+            for pkg in dependencies:
+                if not importlib.util.find_spec(pkg):
+                    miss.append(pkg)
+            print(f"    {', '.join(miss)}")
             print()
             print("To enter the construct with all programs, run:")
             print("For pip users:    pip install -r requirements.txt")
@@ -51,8 +54,8 @@ def fetch_matrix_data() -> None:
     """
     try:
         import pandas as pd  # type: ignore
-        import numpy as np
-        import matplotlib.pyplot as plt
+        import numpy as np  # type: ignore
+        import matplotlib.pyplot as plt  # type: ignore
     except Exception as e:
         print(e)
     try:
@@ -69,7 +72,7 @@ def fetch_matrix_data() -> None:
         plt.figure(figsize=(10, 6))
         plt.hist(
             df['Frequency'],
-            bins=20,
+            bins=50,
             color='purple',
             edgecolor='black',
             alpha=0.7

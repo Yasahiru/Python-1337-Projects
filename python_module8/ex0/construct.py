@@ -29,7 +29,7 @@ def main() -> None:
             print("Safe to install packages without affecting")
             print("the global system.")
             print()
-            print(f"Package installation path: {site.getsitepackages()}")
+            print(f"Package installation path: {site.getsitepackages()[0]}")
     except Exception as e:
         print(e)
 

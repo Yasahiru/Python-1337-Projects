@@ -10,6 +10,9 @@ class ContactType(str, Enum):
     physical = "physical"
     telepathic = "telepathic"
 
+    def __str__(self):
+        return self.value
+
 
 class AlienContact(BaseModel):
     contact_id: str = Field(min_length=5, max_length=15)
@@ -42,16 +45,13 @@ class AlienContact(BaseModel):
         return self
 
 
-def main() -> None:
-    print("Alien Contact Log Validation")
-    print("======================================")
-
+def valid_input() -> None:
     try:
         contact = AlienContact(
             contact_id="AC_2024_001",
-            timestamp="2024-01-01T12:00:00",
+            timestamp=datetime.now(),
             location="Area 51, Nevada",
-            contact_type="radio",
+            contact_type=ContactType.radio,
             signal_strength=8.5,
             duration_minutes=45,
             witness_count=5,
@@ -70,21 +70,29 @@ def main() -> None:
     except Exception as e:
         print(e)
 
-    print("======================================")
 
+def invalid_input() -> None:
     try:
         AlienContact(
             contact_id="AC_002",
-            timestamp="2024-01-01T12:00:00",
+            timestamp=datetime.now(),
             location="Mars",
-            contact_type="telepathic",
+            contact_type=ContactType.telepathic,
             signal_strength=5.0,
             duration_minutes=10,
             witness_count=1
         )
     except Exception as e:
         print("Expected validation error:")
-        print(e)
+        print(e.errors()[0]["msg"])
+
+
+def main() -> None:
+    print("Alien Contact Log Validation")
+    print("======================================\n")
+    valid_input()
+    print("\n======================================")
+    invalid_input()
 
 
 if __name__ == "__main__":

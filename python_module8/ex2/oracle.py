@@ -43,9 +43,9 @@ def display_config(config: dict) -> None:
         print(f"Mode: {config['mode']}")
         print(f"Database: {describe_database(config['mode'])}")
         print(
-            f"""API Access: {
+            f"API Access: {
                 'Authenticated' if config['api_key'] else 'Missing'
-            }"""
+            }"
         )
         print(f"Log Level: {config['log_level']}")
         print(f"Zion Network: {'Online' if config['zion'] else 'Offline'}")
