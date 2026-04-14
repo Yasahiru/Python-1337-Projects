@@ -38,18 +38,21 @@ def mage_stats(mages: list[dict]) -> dict:
 
 def main() -> None:
     artifacts = [
-        {"name": "Crystal Orb", "power": 85, "type": "magic"},
-        {"name": "Fire Staff", "power": 92, "type": "weapon"},
-        {"name": "Ancient Tome", "power": 70, "type": "book"},
+        {'name': 'Shadow Blade', 'power': 96, 'type': 'armor'},
+        {'name': 'Shadow Blade', 'power': 91, 'type': 'weapon'},
+        {'name': 'Water Chalice', 'power': 120, 'type': 'weapon'},
+        {'name': 'Shadow Blade', 'power': 101, 'type': 'focus'}
     ]
 
     mages = [
-        {"name": "Aelith", "power": 90, "element": "fire"},
-        {"name": "Borin", "power": 60, "element": "earth"},
-        {"name": "Ciri", "power": 75, "element": "water"},
+        {'name': 'River', 'power': 97, 'element': 'water'},
+        {'name': 'Ash', 'power': 62, 'element': 'earth'},
+        {'name': 'Jordan', 'power': 88, 'element': 'light'},
+        {'name': 'Luna', 'power': 56, 'element': 'fire'},
+        {'name': 'Sage', 'power': 72, 'element': 'fire'}
     ]
 
-    spells = ["fireball", "heal", "shield"]
+    spells = ['earthquake', 'freeze', 'shield', 'heal']
 
     print("Testing artifact sorter...")
     sorted_artifacts = artifact_sorter(artifacts)
