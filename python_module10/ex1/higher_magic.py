@@ -52,6 +52,7 @@ def main() -> None:
     print("=== Testing spell_combiner ===")
     combined = spell_combiner(fireball, heal)
     print(combined("Dragon", 10))
+    print(spell_combiner.gi_frame.f_locals)
 
     print("\n=== Testing power_amplifier ===")
     mega_fireball = power_amplifier(fireball, 3)

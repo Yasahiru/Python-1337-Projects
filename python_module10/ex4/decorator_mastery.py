@@ -12,7 +12,7 @@ def spell_timer(func: Callable) -> Callable:
         result = func(*args, **kwargs)
 
         end = time.time()
-        print(f"Spell completed in {end - start:.3f} seconds")
+        print(f"Spell completed in {end - start:.2f} seconds")
 
         return result
     return wrapper

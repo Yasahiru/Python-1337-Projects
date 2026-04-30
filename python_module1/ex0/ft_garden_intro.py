@@ -1,13 +1,23 @@
-def main():
-    print("=== Welcome to My Garden ===")
-    name: str = "rose"
-    height: int = 25
-    age: int = 30
-    print(f"Plant: {name.capitalize()}")
-    print(f"Height: {height}cm")
-    print(f"Age: {age} days\n")
-    print("=== End of Program ===")
+from typing import Protocol
 
 
-if __name__ == "__main__":
-    main()
+class First(Protocol):
+    def test():
+        ...
+
+
+class File:
+    def test(self):
+        return "file data"
+
+
+class APIResponse:
+    def test(self):
+        return "api data"
+
+
+f = File()
+a = APIResponse()
+
+f.test()
+a.test()
